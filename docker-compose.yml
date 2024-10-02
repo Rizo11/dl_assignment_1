@@ -1,0 +1,14 @@
+version: '3'
+services:
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../models:/app/models  # Ensure the model is available inside the container
+  app:
+    build: ./app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api  # Ensure API is running before the app
