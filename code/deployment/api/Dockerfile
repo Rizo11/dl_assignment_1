@@ -1,20 +1,17 @@
-# Use Python slim image for smaller size
 FROM python:3.9-slim
 
-# Set the working directory in the container
-WORKDIR /app
+RUN apt-get update && apt-get install -y python3-pip
 
-# Copy the current directory contents into the container
-COPY . /app
+RUN pip install --upgrade pip
 
-# Copy model and any other needed files
-COPY ../../models/model.pkl /app/models/model.pkl
+WORKDIR /api
 
-# Install Python dependencies
-RUN pip install --no-cache-dir fastapi uvicorn pandas numpy scikit-learn joblib pydantic
+COPY ./deployment/api/ . 
 
-# Expose the port that FastAPI will run on
-EXPOSE 8000
+COPY ../../models/model.pkl /api/models/model.pkl
 
-# Command to run the API using Uvicorn
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+RUN pip install --no-cache-dir fastapi uvicorn pandas numpy==1.23.5 scikit-learn==1.2.2 joblib pydantic
+
+EXPOSE 8001
+
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8001"]

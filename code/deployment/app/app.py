@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
-import pandas as pd
-import numpy as np
+
 
 # Streamlit app title
 st.title('Assignment Grade Prediction App')
@@ -21,7 +20,7 @@ if st.button('Predict Grade'):
     }
 
     # Send a request to FastAPI (make sure FastAPI is running and accessible)
-    api_url = 'http://api:8000/predict'  # Replace 'api' with the appropriate container name in Docker
+    api_url = 'http://backend:8001/predict'  # Replace 'api' with the appropriate container name in Docker
     response = requests.post(api_url, json=input_data)
     
     # Process the response and display the prediction
